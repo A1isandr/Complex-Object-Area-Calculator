@@ -1,39 +1,58 @@
 import random
+from math import sqrt
 import numpy as np
 from res import ImageProcessing
 
-def MonteCarlo(filename, height, width, n, round_num):
+def monte_carlo(filename, height, width, n, iter, round_num):
 
     # Получаем размеры изображения
-    (width_px, height_px) = ImageProcessing.GetImageSize(filename)
+    (width_px, height_px) = ImageProcessing.get_image_size(filename)
 
     # Преобразуем изображение в NumPy массив
-    img_array = ImageProcessing.TransformToNPArray(filename)
+    img_array = ImageProcessing.transform_to_np_array(filename)
     
-    # Создаем NumPy массив, заполненный нулями, с размерами изображения, куда будем ставить точки
-    dot_map = np.zeros((height_px, width_px))
+    # Инициализируем список, куда будем записывать вычисленную площади на каждой итерации
+    sq_list = []
 
-    # Вычисляем площадь прямоугольника в км**2 и инициализируем счетчик попаданий в цель
-    SqRect = height * width
-    on_point = 0
+    # Площадь прямоугольника
+    sq_rect = height * width
 
     # "Бомбардируем" изображение точками со случайными координатами (каждую точку заносим в массив dot_map)
-    #  Если попадание в цель (пиксель черного цвета), то прибавляем к счетчику 1
-    for _ in range(n):
-        x = random.randint(0, width_px-1)
-        y = random.randint(0, height_px-1)
+    #  Если попадание в цель (пиксель черного цвета), то прибавляем к счетчику on_point 1
+    for _ in range(iter):
+        on_point = 0 
+        # Создаем NumPy массив, заполненный нулями, с размерами изображения. Сюда будем записывать координаты точек
+        dot_map = np.zeros((height_px, width_px))
 
-        if (img_array[y][x] - [255, 255, 255]).all():
-            on_point +=1
-        
-        dot_map[y][x] = 255
+        for _ in range(n):
+            x = random.randint(0, width_px-1)
+            y = random.randint(0, height_px-1)
 
-    # Объединяем dot_map c исходным изображением
-    ImageProcessing.PasteMapToImage(dot_map, filename)
+            if (img_array[y][x] - [255, 255, 255]).all():
+                on_point +=1
+            
+            dot_map[y][x] = 255
 
-    # Возвращаем вычисленную площадь объекта
-    return round((on_point / n) * SqRect, round_num)
+        # Вычисляем площадь объекта и добавляем ее в конец списка
+        sq_list.append((on_point / n) * sq_rect)
+
+    #*************************
+    for sq in sq_list:
+        print(sq, '\n')
+    #*************************
+
+    # Вычисляем среднее заничение площоди объекта
+    sq_average = round(sum(sq_list) / len(sq_list), round_num)
+
+    # Рассчитываем стандартное отклонение для этих площадей
+    sum_sq = 0
+    for sq in sq_list:
+        sum_sq += (sq - sq_average)**2
+
+    error = round(sqrt(sum_sq / iter), round_num)
+
+    # Объединяем on_point_map и miss_map c исходным изображением
+    ImageProcessing.paste_map_to_image(dot_map, filename)
+
+    return (sq_average, error)
     
-#print(MonteCarlo("BlackSeaLowRes.png", 635, 1196, 1000, 2))
-
-        
