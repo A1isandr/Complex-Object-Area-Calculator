@@ -7,66 +7,87 @@ def OpenDialog():
     path = filedialog.askopenfile()
 
 def Start():
-    Result['text'] = "Результат :", Calculations.MonteCarlo(filename=filename, 
-                                                height=HeightInt.get(), 
-                                                width=WidthInt.get(),
-                                                n=IterattionInt.get(),
-                                                round_num=RoundInt.get()), "км"
+    Result['text'] = "Результат :", Calculations.monte_carlo(filename=filename, 
+                                                height=height_int.get(), 
+                                                width=width_int.get(),
+                                                n=count_int.get(),
+                                                iter=iterations_int.get(),
+                                                round_num=round_int.get()), "км"
 
-    image = Image.open("img\\Result.png")
+    image = Image.open("img\\result.png")
     photo = ImageTk.PhotoImage(image)
     image = canvas.create_image(0, 0, anchor='nw',image=photo)
 
-filename = "img\\Origin.png"
+filename = "img\\origin.png"
 
 window = Tk()
 window.title("Вычисление Площади Объекта Методом Монте-Карло")
 
-HeightInputFrame = Frame(master=window)
-WidthInputFrame = Frame(master=window)
-IterattionFrame = Frame(master=window)
-RoundInputFrame = Frame(master=window)
-StartFrame = Frame(master=window)
-ResultFrame = Frame(master=window)
+# Frames
+height_input_frame = Frame(window)
+width_input_frame = Frame(window)
+count_input_frame = Frame(window)
+iterations_input_frame = Frame(window)
+round_input_frame = Frame(window)
+start_frame = Frame(window)
+result_frame = Frame(window)
 
-HeightInt = IntVar()
-WidthInt = IntVar()
-IterattionInt = IntVar()
-RoundInt = IntVar()
-ResultDouble = DoubleVar()
+# Variables
+height_int = IntVar()
+width_int = IntVar()
+count_int = IntVar()
+iterations_int = IntVar()
+round_int = IntVar()
+result_double = DoubleVar()
 
-RectangleHeight = Label(master=HeightInputFrame, text="Высота прямоугольника (км): ")
-RectangleWidth = Label(master=WidthInputFrame, text="Ширина прямоугольника (км): ")
-Iterattions = Label(master=IterattionFrame, text="Количество Итераций: ")
-RoundNum = Label(master=RoundInputFrame, text="Количество значимых цифр после запятой: ")
-Result = Label(master=ResultFrame, text=f"Результат: 0.0 км")
+# Lables
+RectangleHeight = Label(master=height_input_frame, text="Высота прямоугольника (км): ")
+RectangleWidth = Label(master=width_input_frame, text="Ширина прямоугольника (км): ")
+count = Label(master=count_input_frame, text="Количество точек: ")
+iterations = Label(iterations_input_frame, text="Количество итераций: ")
+RoundNum = Label(master=round_input_frame, text="Количество значимых цифр после запятой: ")
+Result = Label(master=result_frame, text="Результат: 0.0 км")
 
-EntryHeight = Entry(master=HeightInputFrame, textvariable=HeightInt)
-EntryWidth = Entry(master=WidthInputFrame, textvariable=WidthInt)
-EntryIterattions = Entry(master=IterattionFrame, textvariable=IterattionInt)
-EntryRoundNum = Entry(master=RoundInputFrame, textvariable=RoundInt)
+# Entries
+EntryHeight = Entry(master=height_input_frame, textvariable=height_int)
+EntryWidth = Entry(master=width_input_frame, textvariable=width_int)
+entry_count = Entry(master=count_input_frame, textvariable=count_int)
+entry_iterations = Entry(iterations_input_frame, textvariable=iterations_int)
+EntryRoundNum = Entry(master=round_input_frame, textvariable=round_int)
 
-StartButton = Button(master=StartFrame, text="Вычислить", command=Start)
+# Buttons
+StartButton = Button(master=start_frame, text="Вычислить", command=Start)
 
+#=========================================================================
+# Pack
+#=========================================================================
+
+# Lables
 RectangleHeight.pack(side="left")
 RectangleWidth.pack(side="left")
-Iterattions.pack(side="left")
+count.pack(side="left")
+iterations.pack(side="left")
 RoundNum.pack(side="left")
 Result.pack()
 
+# Entries
 EntryHeight.pack()
 EntryWidth.pack()
-EntryIterattions.pack()
+entry_count.pack()
+entry_iterations.pack()
 EntryRoundNum.pack()
 
+# Buttons
 StartButton.pack()
 
-HeightInputFrame.pack()
-WidthInputFrame.pack()
-IterattionFrame.pack()
-RoundInputFrame.pack()
-StartFrame.pack()
-ResultFrame.pack()
+# Frames
+height_input_frame.pack()
+width_input_frame.pack()
+count_input_frame.pack()
+iterations_input_frame.pack()
+round_input_frame.pack()
+start_frame.pack()
+result_frame.pack()
 
 
 #Добавим изображение
