@@ -1,9 +1,13 @@
+import time
 import random
-from math import sqrt
 import numpy as np
+from math import sqrt
 from res import ImageProcessing
 
 def monte_carlo(filename, height, width, n, iter, round_num):
+
+    # Засекаем время
+    start_time = time.time()
 
     # Получаем размеры изображения
     (width_px, height_px) = ImageProcessing.get_image_size(filename)
@@ -42,17 +46,21 @@ def monte_carlo(filename, height, width, n, iter, round_num):
     #*************************
 
     # Вычисляем среднее заничение площоди объекта
-    sq_average = round(sum(sq_list) / len(sq_list), round_num)
+    sq_average = sum(sq_list) / len(sq_list)
+    if (round_num != 0): sq_average = round(sq_average, round_num)
+    else: sq_average = round(sq_average)
 
     # Рассчитываем стандартное отклонение для этих площадей
     sum_sq = 0
     for sq in sq_list:
         sum_sq += (sq - sq_average)**2
 
-    error = round(sqrt(sum_sq / iter), round_num)
+    error = sqrt(sum_sq / iter)
+    if (round_num != 0): error = round(error, round_num)
+    else: error = round(error)
 
     # Объединяем on_point_map и miss_map c исходным изображением
     ImageProcessing.paste_map_to_image(dot_map, filename)
 
-    return (sq_average, error)
+    return (sq_average, error, round(time.time() - start_time, 3))
     
