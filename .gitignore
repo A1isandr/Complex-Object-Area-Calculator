@@ -162,3 +162,7 @@ cython_debug/
 # Images
 dot_map.png
 result.png
+
+# Other
+references.txt
+cache

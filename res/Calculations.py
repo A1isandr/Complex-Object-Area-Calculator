@@ -40,12 +40,7 @@ def monte_carlo(filename, height, width, n, iter, round_num):
         # Вычисляем площадь объекта и добавляем ее в конец списка
         sq_list.append((on_point / n) * sq_rect)
 
-    #*************************
-    for sq in sq_list:
-        print(sq, '\n')
-    #*************************
-
-    # Вычисляем среднее заничение площоди объекта
+    # Вычисляем среднее заничение площади объекта
     sq_average = sum(sq_list) / len(sq_list)
     if (round_num != 0): sq_average = round(sq_average, round_num)
     else: sq_average = round(sq_average)
