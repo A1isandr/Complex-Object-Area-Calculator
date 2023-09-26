@@ -1,6 +1,6 @@
 # Complex Object Area Calculator
 <h2>Description</h2>
-This program calculates approximate area of any given object with uncommon form.
+This program calculates approximate area of any given object with various complexity forms.
 
 <h2>Installation</h2>
 Make sure you have installed Python3 and PIP.
